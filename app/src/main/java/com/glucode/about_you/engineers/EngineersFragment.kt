@@ -9,6 +9,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.glucode.about_you.R
 import com.glucode.about_you.databinding.FragmentEngineersBinding
 import com.glucode.about_you.engineers.models.Engineer
@@ -18,7 +20,7 @@ import com.glucode.about_you.mockdata.MockData.engineers
 class EngineersFragment : Fragment() {
     private lateinit var binding: FragmentEngineersBinding
     private lateinit var adapter: EngineersRecyclerViewAdapter
-    private lateinit var engineersList: MutableList<Engineer>
+    private var engineersList: MutableList<Engineer> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,29 +39,30 @@ class EngineersFragment : Fragment() {
     }
 
     private fun setUpEngineersList(engineers: MutableList<Engineer>) {
-        binding.list.adapter = EngineersRecyclerViewAdapter(engineers) { engineer ->
+        adapter = EngineersRecyclerViewAdapter(engineers) { engineer ->
             goToAbout(engineer)
         }
+        binding.list.layoutManager = LinearLayoutManager(requireContext()) as RecyclerView.LayoutManager
+        binding.list.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.list.addItemDecoration(dividerItemDecoration)
 
         this.engineersList = engineers
-        adapter = binding.list.adapter as EngineersRecyclerViewAdapter
     }
 
     private fun sortEngineersByBugs() {
         engineersList.sortBy { it.quickStats.bugs }
-        adapter.notifyDataSetChanged()
+        adapter.updateList(engineersList)
     }
 
     private fun sortEngineersByCoffee() {
         engineersList.sortBy { it.quickStats.coffees }
-        adapter.notifyDataSetChanged()
+        adapter.updateList(engineersList)
     }
 
     private fun sortEngineersByYears() {
         engineersList.sortBy { it.quickStats.years }
-        adapter.notifyDataSetChanged()
+        adapter.updateList(engineersList)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -89,10 +92,8 @@ class EngineersFragment : Fragment() {
             val position = data.getIntExtra("position", -1)
             if (position != -1 && selectedImageUri != null) {
                 val updatedEngineer = engineers[position].copy(imageUrl = selectedImageUri)
-                engineers = engineers.toMutableList().apply {
-                    set(position, updatedEngineer)
-                }
-                binding.list.adapter?.notifyItemChanged(position)
+                engineersList[position] = updatedEngineer
+                adapter.updateList(engineersList)
             }
         }
     }
