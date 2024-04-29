@@ -1,5 +1,3 @@
-package com.glucode.about_you.about.views
-
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -37,7 +35,12 @@ class QuestionCardView @JvmOverloads constructor(
         set(value) {
             field = value
             value ?: return
-            binding.answers.children.elementAt(value).isSelected = true
+            if (value >= 0 && value < binding.answers.childCount) {
+                for (i in 0 until binding.answers.childCount) {
+                    val answerView = binding.answers.getChildAt(i) as? AnswerCardView
+                    answerView?.isSelected = (i == value)
+                }
+            }
         }
 
     init {
@@ -49,19 +52,6 @@ class QuestionCardView @JvmOverloads constructor(
     private fun addAnswer(title: String) {
         val answerView = AnswerCardView(context)
         answerView.title = title
-        answerView.setOnClickListener { onAnswerClick(it) }
         binding.answers.addView(answerView)
-    }
-
-    private fun onAnswerClick(view: View) {
-        if (!view.isSelected) {
-            binding.answers.children.filter { it.isSelected }.forEach {
-                it.isSelected = false
-            }
-        }
-    }
-
-    private fun setSelection() {
-
     }
 }

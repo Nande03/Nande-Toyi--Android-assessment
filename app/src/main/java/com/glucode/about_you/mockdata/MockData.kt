@@ -1,16 +1,17 @@
 package com.glucode.about_you.mockdata
 
+import android.net.Uri
 import com.glucode.about_you.engineers.models.Answer
 import com.glucode.about_you.engineers.models.Engineer
 import com.glucode.about_you.engineers.models.Question
 import com.glucode.about_you.engineers.models.QuickStats
 
 object MockData {
-    val engineers = listOf(
+    var engineers = listOf(
         Engineer(
             name = "Reenen",
             role = "Dev manager",
-            defaultImageName = "",
+            imageUrl = Uri.parse("android.resource://com.glucode.about_you/drawable/ic_person"),
             quickStats = QuickStats(years = 6, coffees = 5400, bugs = 1800),
             questions = listOf(
                 Question.One(Answer(text = "6am", index = 0)),
@@ -23,7 +24,7 @@ object MockData {
         Engineer(
             name = "Wilmar",
             role = "Head of Engineering",
-            defaultImageName = "",
+            imageUrl = Uri.parse("android.resource://com.glucode.about_you/drawable/ic_person"),
             quickStats = QuickStats(years = 15, coffees = 4000, bugs = 4000),
             questions = listOf(
                 Question.One(Answer(text = "midnight", index = 3)),
@@ -36,7 +37,7 @@ object MockData {
         Engineer(
             name = "Eben",
             role = "Head of Testing",
-            defaultImageName = "",
+            imageUrl = Uri.parse("android.resource://com.glucode.about_you/drawable/ic_person"),
             quickStats = QuickStats(years = 14, coffees = 1000, bugs = 100),
             questions = listOf(
                 Question.One(Answer(text = "midnight", index = 3)),
@@ -49,7 +50,7 @@ object MockData {
         Engineer(
             name = "Stefan",
             role = "Senior dev",
-            defaultImageName = "",
+            imageUrl = Uri.parse("android.resource://com.glucode.about_you/drawable/ic_person"),
             quickStats = QuickStats(years = 7, coffees = 9000, bugs = 700),
             questions = listOf(
                 Question.One(Answer(text = "6am", index = 0)),
@@ -62,7 +63,7 @@ object MockData {
         Engineer(
             name = "Brandon",
             role = "Senior dev",
-            defaultImageName = "",
+            imageUrl = Uri.parse("android.resource://com.glucode.about_you/drawable/ic_person"),
             quickStats = QuickStats(years = 9, coffees = 99999, bugs = 99999),
             questions = listOf(
                 Question.One(Answer(text = "6am", index = 0)),
@@ -75,7 +76,7 @@ object MockData {
         Engineer(
             name = "Henri",
             role = "Senior dev",
-            defaultImageName = "",
+            imageUrl = Uri.parse("android.resource://com.glucode.about_you/drawable/ic_person"),
             quickStats = QuickStats(years = 10, coffees = 1800, bugs = 1000),
             questions = listOf(
                 Question.One(Answer(text = "6am", index = 0)),

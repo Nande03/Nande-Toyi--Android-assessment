@@ -1,8 +1,10 @@
-package com.glucode.about_you.about.views
-
+// AnswerCardView.kt
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -22,6 +24,9 @@ class AnswerCardView @JvmOverloads constructor(
     private val selectedTextColor: Int
     @ColorInt
     private val deselectedTextColor: Int
+    @ColorInt
+    private val selectedBorderColor: Int
+    private val selectedBorderWidth: Float
 
     var title: String? = null
         set(value) {
@@ -35,19 +40,38 @@ class AnswerCardView @JvmOverloads constructor(
         selectedCardBackgroundColor = blackColour
         selectedTextColor = blackColour
         deselectedTextColor = whiteColour
+        selectedBorderColor = whiteColour
+        selectedBorderWidth = resources.getDimension((R.dimen.corner_radius_normal))
         radius = resources.getDimension(R.dimen.corner_radius_normal)
         elevation = resources.getDimension(R.dimen.elevation_normal)
-        setCardBackgroundColor(null)
+
+        layoutParams = LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
         if (selected) {
-            setCardBackgroundColor(selectedCardBackgroundColor)
             binding.title.setTextColor(selectedTextColor)
+            setBackgroundWithBorder(selectedBorderColor, selectedBorderWidth) // New: Add border when selected
         } else {
-            setCardBackgroundColor(null)
             binding.title.setTextColor(deselectedTextColor)
+            setBackgroundWithBorder(selectedCardBackgroundColor, selectedBorderWidth)
         }
+    }
+
+    // New: Function to set background with border
+    fun setBackgroundWithBorder(@ColorInt borderColor: Int, borderWidth: Float) {
+        val drawable = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = radius
+            setStroke(borderWidth.toInt(), borderColor)
+            if (isSelected) {
+                setColor(Color.WHITE)
+            }
+        }
+        background = drawable
     }
 }
