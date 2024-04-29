@@ -10,7 +10,7 @@ import com.glucode.about_you.mockdata.MockData
 
 
 class EngineersViewModel : ViewModel() {
-    private val _engineers = MutableLiveData<List<Engineer>>()
+    val _engineers = MutableLiveData<List<Engineer>>()
     val engineers: LiveData<List<Engineer>> = _engineers
 
     init {

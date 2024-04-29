@@ -1,10 +1,8 @@
-// AnswerCardView.kt
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.cardview.widget.CardView
@@ -52,62 +50,14 @@ class AnswerCardView @JvmOverloads constructor(
         )
     }
 
-    private val highlightDrawable: GradientDrawable by lazy {
-        GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            cornerRadius = resources.getDimension(R.dimen.corner_radius_normal)
-            setColor(Color.WHITE) // Set initial color
-        }
-    }
-
     override fun setSelected(selected: Boolean) {
-        if (isSelected != selected) {
-            super.setSelected(selected)
-            updateBackground(selected)
-            updateTextColor(selected)
-            if (selected) {
-                addHighlight()
-            } else {
-                removeHighlight()
-            }
-        }
-    }
-
-    private fun updateTextColor(selected: Boolean) {
-        binding.title.setTextColor(if (selected) selectedTextColor else deselectedTextColor)
-    }
-
-    private fun updateBackground(selected: Boolean) {
+        super.setSelected(selected)
         if (selected) {
-            setBackgroundWithBorder(selectedBorderColor, selectedBorderWidth)
-            addHighlight()
+            binding.title.setTextColor(selectedTextColor)
+            setBackgroundWithBorder(selectedBorderColor, selectedBorderWidth) // New: Add border when selected
         } else {
+            binding.title.setTextColor(deselectedTextColor)
             setBackgroundWithBorder(selectedCardBackgroundColor, selectedBorderWidth)
-            removeHighlight()
-        }
-    }
-
-    private fun addHighlight() {
-        removeHighlight()
-        if (parent is ViewGroup) {
-            val parentView = parent as ViewGroup
-            parentView.addView(highlightView)
-        }
-    }
-
-    private fun removeHighlight() {
-        if (highlightView.parent != null) {
-            (highlightView.parent as ViewGroup).removeView(highlightView)
-        }
-    }
-
-    private val highlightView: View by lazy {
-        View(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            background = highlightDrawable
         }
     }
 
